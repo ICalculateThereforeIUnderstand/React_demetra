@@ -5,8 +5,12 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
+  Link,
+  useNavigate
 } from "react-router-dom";
+import useFetch from "./useFetch.js";
+
+const ADRESA = "http://localhost:3000"
 
 const root = ReactDOM.createRoot(document.querySelector('#cont'));
 
@@ -15,6 +19,8 @@ function dodajStilove(el, stilovi) {
       el.style[key] = stilovi[key];
   }
 }
+
+const Kontekst = React.createContext();
 
 function Navbar() {
 
@@ -109,14 +115,196 @@ function Knjige() {
   )
 }
 
-function Izdvajamo() {
+function Kartica({id="neki id", naslov="neki naslov", cijena="neka cijena", slika=null, autori=[]}) {
+  const [aut, setAut] = React.useState("--");
+  const [idk, setIdk] = React.useContext(Kontekst);
+
+  React.useEffect(()=>{
+    if (autori.length === 1) {
+      setAut(autori[0]);
+    } else if (autori.length > 1)  {
+      let rez = "";
+      for (let i = 0; i < autori.length-1; i++) {
+        rez += autori[i] + "; ";
+      }
+      rez += autori[autori.length-1];
+      setAut(rez);
+    }
+  }, [])
+
+  function klik() {
+    console.log("Upravo si kliknuo na " + id + " / " + Math.random());
+    setIdk(id);
+  }
+
   return (
-    <p>ovdje dolazi stranica izdvajamo</p>
+    <Link to="/detalji" onClick={klik}>
+      <div className="izdvajamo-element">
+       <div className="element-el1">
+          {slika === null ? <img src="nepoznata_knjiga.jpg" className="element-el1-img" alt="logo"/> 
+                          : <img src={"data:image/jpg;base64,"+slika} className="element-el1-img" alt="logo"/>
+          }  
+       </div>
+       <div className="element-el2">
+           <p className="element-el2-naslov">{naslov}</p>
+           <p className="element-el2-autor">{aut}</p>
+           <p className="element-el2-cijena">{cijena} kn</p>
+       </div>
+      </div>
+    </Link>
+  )
+}
+
+function Izdvajamo({loading, error, value}) {
+  //const {loading, error, value} = useFetch(ADRESA + '/api/izdvajamo', {}, []);
+
+  //const {loading, error, value} = useFetch('http://localhost:3000/', {}, []);
+  //const {loading, error, value} = useFetch('http://localhost:3000/api/izdvajamo', {}, []);
+
+  const [id, setId, vri, setVri] = React.useContext(Kontekst);
+
+  React.useEffect(()=>{
+    console.log(Math.random());
+    console.log("Loading je " + loading);
+    console.log("Error je " + error);
+    if (value !== undefined) {
+      console.log("Value je " + value[0].naslov);
+    }
+    setVri(value);
+    //setId(22);
+
+  }, [loading, error, value])
+
+  return (
+    <main id="izdvajamo-main">
+      <div id="izdvajamo-stupac1">
+        <div id="izdvajamo-el4">
+            <p>Možda će Vas zanimati:</p>
+        </div>
+        {!loading && error === undefined ?
+          value.map((el)=>{return <Kartica key={el.id} id={el.id} naslov={el.naslov} 
+                          cijena={el.cijena} slika={el.slika} autori={el.autori}/>})
+          : null}
+        
+      </div>
+      <div id="izdvajamo-stupac2">
+        <p id="izdvajamo-el1">Filosofska biblioteka Dimitrija Savića</p>
+        <p id="izdvajamo-el2">email: <a href="mailto:dimitrije.savic@zg.t-com.hr">dimitrije.savic@zg.t-com.hr</a></p>
+        <img id="izdvajamo-el3" src="cayton_sa_okvirom_prozirni.gif" alt="Cayton"/>
+      </div>
+    </main>
+  )
+}
+
+function Detalji() {
+  
+  const [id, setId, vri, setVri] = React.useContext(Kontekst);
+  
+  const [naslov, setNaslov] = React.useState("-");
+  const [autori, setAutori] = React.useState("-");
+  const [cijena, setCijena] = React.useState("-");
+  const [biblioteka, setBiblioteka] = React.useState("-");
+  const [godina, setGodina] = React.useState("-");
+  const [brojStranica, setBrojStranica] = React.useState("-");
+  const [isbn, setIsbn] = React.useState("-");
+  const [slika, setSlika] = React.useState(null);
+
+  React.useEffect(()=>{
+    //console.log("ID je " + id);
+    //console.log(vri);
+  }, []);
+
+  React.useEffect(()=>{
+    if (vri !== undefined) {
+      let e = vri.find((el)=>{return el.id === id});
+      console.log("Odabrani element je " + e.naslov);
+      !e.naslov ? setNaslov("-") : setNaslov(e.naslov);
+      !e.cijena ? setCijena("-") : setCijena(e.cijena + "kn");
+      !e.biblioteka ? setBiblioteka("-") : setBiblioteka(e.biblioteka);
+      !e.godina ? setGodina("-") : setGodina(e.godina);
+      !e.brojstranica ? setBrojStranica("-") : setBrojStranica(e.brojstranica);
+      !e.isbn ? setIsbn("-") : setIsbn(e.isbn);
+      setSlika(e.slika);
+      let brAutora = e.autori.length;
+      console.log("broj autora je " + brAutora);
+      if (brAutora === 0) {
+        setAutori("-");
+      } else if (brAutora === 1) {
+        setAutori(e.autori[0]);
+      } else {
+        let rez = "";
+        for (let i = 0; i < brAutora-1; i++) {
+          rez += e.autori[i] + "; ";
+        }
+        rez += e.autori[brAutora-1];
+        setAutori(rez);
+      }
+      console.log(e);
+    }
+  }, [id]);
+
+
+  const navigate = useNavigate();
+
+  function klik() {
+    navigate(-1);
+  }
+
+  return (
+    <main id="opisknjige-main">
+      <div id="opisknjige-stupac1">
+        {slika === null ? <img src="nepoznata_knjiga.jpg" id="opisknjige-img" alt="slika knjige"/> 
+                          : <img src={"data:image/jpg;base64,"+slika} id="opisknjige-img" alt="slika knjige"/>
+        } 
+      </div>
+      <div id="opisknjige-stupac2">
+        <table id="opisknjige-tablica"><tbody>
+          <tr className="opisknjige-neparnired">
+            <td className="opisknjige-elementi2">Naslov:</td>
+            <td className="opisknjige-elementi1">{naslov}</td>
+          </tr>
+          <tr>
+            <td className="opisknjige-elementi2">Autor:</td>
+            <td className="opisknjige-elementi1">{autori}</td>
+          </tr>
+          <tr className="opisknjige-neparnired">
+            <td className="opisknjige-elementi2">Cijena:</td>
+            <td className="opisknjige-elementi1">{cijena}</td>
+          </tr>
+          <tr>
+            <td className="opisknjige-elementi2">Biblioteka:</td>
+            <td className="opisknjige-elementi1">{biblioteka}</td>
+          </tr>
+          <tr className="opisknjige-neparnired">
+            <td className="opisknjige-elementi2">Godina izdanja:</td>
+            <td className="opisknjige-elementi1">{godina}</td>
+          </tr>
+          <tr>
+            <td className="opisknjige-elementi2">Broj stranica:</td>
+            <td className="opisknjige-elementi1">{brojStranica}</td>
+          </tr>
+          <tr className="opisknjige-neparnired">
+            <td className="opisknjige-elementi2">ISBN:</td>
+            <td className="opisknjige-elementi1">{isbn}</td>
+          </tr>
+        </tbody></table>
+        <img src="slika_demetre8bit_mala.png" id="opisknjige-img1" alt="slika Demetre"/>
+        <div id="opisknjige-div-link">
+          <p className="link-header" style={{cursor:"pointer"}} onClick={klik}>Natrag na glavnu stranicu</p>
+        </div>
+      </div>
+    </main>
   )
 }
 
 function App() {
+  const [id, setId] = React.useState();
+  const [vri, setVri] = React.useState();
+
+  const {loading, error, value} = useFetch(ADRESA + '/api/izdvajamo', {}, []);
+
   return (
+    <Kontekst.Provider value={[id, setId, vri, setVri]}>
     <Router>
       <div id="tijelo">
         <Navbar/>
@@ -125,17 +313,19 @@ function App() {
           <Route exact path="/onama" element={<ONama/>} />
 
           <Route exact path="/knjige" element={<Knjige/>} />
-          <Route exact path="/" element={<Izdvajamo/>} />
+          <Route exact path="/" element={<Izdvajamo loading={loading} error={error} value={value}/>} />
+          <Route exact path="/detalji" element={<Detalji/>} />
         </Routes>
       </div>
     </Router>
+    </Kontekst.Provider>
   )
 }
 
 root.render(
-  <React.StrictMode>
+  
     <App />
-  </React.StrictMode>
+  
 );
 
 

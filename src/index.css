@@ -5,7 +5,7 @@ body {
 }
 
 #tijelo {
-  background-color: #999;
+  /*background-color: #999;*/
   margin: 0 auto 0 auto;
   padding: 0;
   max-width: 90%;
@@ -312,5 +312,308 @@ nav {
 
   #kontakt-el {
       display: flex;
+  }
+}
+
+
+/* izdvajamo */
+
+#izdvajamo-main {
+  min-height: 100vh;
+  width: 100%;
+  /*background-color: #f7cc86;*/
+  position: relative;
+}
+
+#izdvajamo-stupac1 {
+  /*height: 100%;*/
+  width: 50%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #f7cc86;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#izdvajamo-stupac2 {
+  /*height: 100%;*/
+  width: 50%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #f5d39d;
+}
+
+@media screen and (max-width: 649px) {
+  #izdvajamo-stupac1, #izdvajamo-stupac2 {
+      position: static;
+      width: 100%;
+  }
+}
+
+#izdvajamo-el1 {
+  margin: 0;
+  padding: 100px 30px 0px 30px;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+#izdvajamo-el2 {
+  margin: 0;
+  padding: 40px 30px 0px 30px;
+}
+
+#izdvajamo-el3 {
+  margin: 0px;
+  width: 80%;
+  padding: 20px 10% 0px 10%;
+}
+
+#izdvajamo-el4 {
+  /*position: absolute;
+  top: 20px;
+  left: 20px;*/
+  height: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.izdvajamo-element {
+  /*width: 380px;
+  height: 190px;*/
+  background-color: #d7ac66;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 260px) {
+  .izdvajamo-element {
+      width: 190px;
+      height: 95px;
+  }
+}
+
+@media screen and (min-width: 320px) {
+  .izdvajamo-element {
+      width: 260px;
+      height: 130px;
+  }
+}
+
+@media screen and (min-width: 400px) {
+  .izdvajamo-element {
+      width: 320px;
+      height: 160px;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .izdvajamo-element {
+      width: 400px;
+      height: 200px;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .izdvajamo-element {
+      width: 280px;
+      height: 140px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .izdvajamo-element {
+      width: 340px;
+      height: 180px;
+  }
+}
+
+@media screen and (min-width: 950px) {
+  .izdvajamo-element {
+      width: 380px;
+      height: 190px;
+  }
+}
+
+.izdvajamo-element:hover {
+  background-color: #b78c46;
+}
+
+
+.element-el1 {
+  height: 100%;
+  width: 35%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  /*background-color: green;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.element-el2 {
+  height: 100%;
+  width: 65%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /*background-color: red;*/
+}
+
+.element-el1-img {
+  max-height: 95%;
+  max-width: 95%;
+}
+
+.element-el2-naslov {
+  font-size: 12px;
+  /*background-color: blue;*/
+  color: black;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  padding-right: 6px;
+}
+
+.element-el2-autor {
+  font-size: 12px;
+  /*background-color: blue;*/
+  color: #d60b2d;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  padding-right: 4px;
+}
+
+.element-el2-cijena {
+  font-size: 12px;
+  /*background-color: blue;*/
+  color: #239551;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 399px) {
+  .element-el2-naslov, .element-el2-autor, .element-el2-cijena {
+      font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .element-el2-naslov, .element-el2-autor, .element-el2-cijena {
+      font-size: 8px;
+  }
+}
+
+/* opis knjige*/
+
+#opisknjige-main {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #f7cc86;
+}
+
+#opisknjige-stupac1 {
+  width: 40%;
+  min-height: 500px;
+  /*background-color: yellow;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#opisknjige-stupac2 {
+  width: 60%;
+  min-height: 500px;
+  /*background-color: green;*/
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+#opisknjige-img {
+  width: 90%;
+}
+
+#opisknjige-stupac2 table, #opisknjige-stupac2 td {
+  border: 1px dotted black;
+}
+
+.opisknjige-neparnired {
+  background-color: #d7ac66;
+}
+
+.opisknjige-elementi1 {
+  text-align: center;
+  padding: 5px 0px 5px 0px;
+}
+
+.opisknjige-elementi2 {
+  padding-left: 5px;
+  width: 34%;
+}
+
+#opisknjige-tablica {
+  width: 90%;
+  margin: 30px 5% 0px 5%;
+}
+
+#opisknjige-img1 {
+  width: 20%;
+  margin: 20px 40% 0px 40%;
+  display: block;
+}
+
+#opisknjige-div-link {
+  position: absolute;
+  height: 100px;
+  width: 66.66%;
+  bottom: -100px;
+  left: -66.66%;
+  /*background-color: blue;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 700px) {
+  #opisknjige-stupac1 {
+      width: 70%;
+      min-height: 500px;
+      position: static;
+  }
+
+  #opisknjige-stupac2 {
+      width: 100%;
+      min-height: 500px;
+      position: relative;
+      top: 0px;
+      right: 0px;
+  }
+
+  #opisknjige-div-link {
+      position: absolute;
+      height: 100px;
+      width: 100%;
+      bottom: -100px;
+      left: 0px;
   }
 }
