@@ -74,7 +74,7 @@ function ONama() {
     <main id="onama-main">
       <p id="onama-el1">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.  Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
       <img src="cayton_sa_okvirom_prozirni.gif" id="onama-el2" alt="slika Caytona" />
-      <Link to="/" id="onama-el3">Natrag na glavnu stranicu</Link>
+      <Link to="/knjige" id="onama-el3">Natrag na glavnu stranicu</Link>
     </main>
   )
 }
@@ -103,7 +103,7 @@ function Kontakt() {
       </table>
       <img src="slikamalak.jpg" id="kontakt-slika1" alt="slika knjizare" />
       <div id="kontakt-el">
-        <Link to="/" id="kontakt-link" className="link-header">Natrag na glavnu stranicu</Link>
+        <Link to="/knjige" id="kontakt-link" className="link-header">Natrag na glavnu stranicu</Link>
       </div>
       <img src="slika_demetre8bit_mala.png" id="kontakt-slika" alt="slika Demetre"/>
     </main>
@@ -322,8 +322,11 @@ function Knjige({loading, error, value}) {
   const [biblioteka, setBiblioteka] = React.useState("0");
   const [stranica, setStranica] = React.useState(1);
   const [vri1, setVri1] = React.useState([]);
+  const [params, setParams] = useSearchParams();
 
   const [a, b, c, d, vri, setVri] = React.useContext(Kontekst);
+  const [br, setBr] = React.useState(0);
+  const navigate = useNavigate();
 
   //const {loading, error, value} = useFetch(ADRESA + '/api/sveknjige', {}, []);
 
@@ -337,6 +340,87 @@ function Knjige({loading, error, value}) {
   const r0 = React.useRef();
 
   React.useEffect(()=>{
+    console.log("trenutni autor je " + params.get("autor"));
+    let v = params.get("naslov");
+    v !== null ? setNaslov(v) : setNaslov("");
+    v = params.get("autor");
+    v !== null ? setAutor(v) : setAutor("");
+    v = params.get("godina");
+    v !== null ? setGodina(v) : setGodina("");
+    v = params.get("biblioteka");
+    v !== null ? postaviBiblioteku(v) : postaviBiblioteku("0");
+    setBr((prev)=>{return prev+1});
+  }, [params, vri]);
+
+  function postaviBiblioteku(kod) {
+    setBiblioteka((prev)=>{
+      let r = vratiRef(prev);
+      console.log("prethodna " + prev);
+      r.current.classList.remove("knjige-aktivan");
+      r.current.classList.add("knjige-neaktivan");
+
+      r = vratiRef(kod);
+      console.log("sljedeca " + kod);
+      r.current.classList.remove("knjige-neaktivan");
+      r.current.classList.add("knjige-aktivan");
+      //setBiblioteka(kod);
+
+      
+
+      //setBrojKnjiga(vri1.length);
+      return kod;
+    });
+  }
+
+  React.useEffect(()=>{
+    if (vri !== undefined) {
+      // filtriramo zbog pritiska gumba
+      console.log("autor JE " + autor);
+      setVri1(vri.filter((el,index)=>{
+        let id1 = "";
+  
+        // prvi filter je po biblioteci
+        if (el.biblioteka_id !== null) {
+          id1 = el.biblioteka_id.toString();
+          if (biblioteka !== "0" && id1 !== biblioteka) {
+            console.log("element sa " + id1 + " ne prolazi " + biblioteka);
+            return false;
+          } else {
+            
+          }
+        } else {
+          if (biblioteka !== "0")  return false;
+        }
+  
+        //drugi filter je po naslovu
+        if (!el.naslov.toLowerCase().includes(naslov.toLowerCase())) return false;
+  
+        //treci filter je po godini
+        if (godina !== "" && godina !== el.godina) {
+          return false;
+        }
+      
+        //cetvrti filter je po autoru
+        if (autor.length !== 0) {
+          let vel = el.autori.length;
+          let rez1 = false;
+          for (let i = 0; i < vel; i++) {
+            if (el.autori[i].toLowerCase().includes(autor.toLowerCase())) {
+              rez1 = true;
+              break;
+            }
+          }
+          if (!rez1) return false;
+        }
+  
+  
+        //console.log("element sa " + id1 + " prolazi " + kod);
+        return true;
+      }));
+    };
+  }, [br]);
+
+  React.useEffect(()=>{
 
     console.log(Math.random());
     console.log("Loading je " + loading);
@@ -346,6 +430,10 @@ function Knjige({loading, error, value}) {
       setVri(value);
       setBrojKnjiga(value.length);
     }
+
+    //const params = new URLSearchParams({"foo":1,"goo":"ides"});
+    //console.log("PARAMS JE " + params);
+
   }, [loading, error, value]);
 
   React.useEffect(()=>{
@@ -395,6 +483,12 @@ function Knjige({loading, error, value}) {
     }
   }
 
+  function submitaj() {
+    let params = new URLSearchParams({"autor":autor, "naslov":naslov, 
+          "godina":godina, "stranica":stranica, "biblioteka": biblioteka});
+    navigate("/knjige?" + params);
+  }
+
   function gumbKlik(e) {
     if (vri === undefined) return false;
 
@@ -402,70 +496,13 @@ function Knjige({loading, error, value}) {
     console.log("kliknuo si na " + kod);
 
     //if (kod !== biblioteka) {
-      setBiblioteka((prev)=>{
-        let r = vratiRef(prev);
-        r.current.classList.remove("knjige-aktivan");
-        r.current.classList.add("knjige-neaktivan");
-
-        r = vratiRef(kod);
-        r.current.classList.remove("knjige-neaktivan");
-        r.current.classList.add("knjige-aktivan");
-        setBiblioteka(kod);
-
-        // filtriramo zbog pritiska gumba
-        setVri1(vri.filter((el,index)=>{
-          let rez = true;
-          let id1 = "";
-
-          // prvi filter je po biblioteci
-          if (el.biblioteka_id !== null) {
-            id1 = el.biblioteka_id.toString();
-            if (kod !== "0" && id1 !== kod) {
-              console.log("element sa " + id1 + " ne prolazi " + kod);
-              return false;
-            } else {
-              
-            }
-          } else {
-            if (kod !== "0")  return false;
-          }
-
-          //drugi filter je po naslovu
-          if (!el.naslov.toLowerCase().includes(naslov.toLowerCase())) return false;
-
-          //treci filter je po godini
-          if (godina !== "" && godina !== el.godina) {
-            return false;
-          }
-        
-          //cetvrti filter je po autoru
-          if (autor.length !== 0) {
-            let vel = el.autori.length;
-            let rez1 = false;
-            for (let i = 0; i < vel; i++) {
-              if (el.autori[i].toLowerCase().includes(autor.toLowerCase())) {
-                rez1 = true;
-                break;
-              }
-            }
-            if (!rez1) return false;
-          }
-  
-
-          //console.log("element sa " + id1 + " prolazi " + kod);
-          return rez;
-        }));
-
-        //setBrojKnjiga(vri1.length);
-        return kod;
-      });
+      
     //}
+    let params = new URLSearchParams({"autor":autor, "naslov":naslov, 
+          "godina":godina, "stranica":stranica, "biblioteka": kod});
+    navigate("/knjige?" + params);
   }
 
-  React.useEffect(()=>{
-    r0.current.classList.remove("knjige-neaktivan");
-    r0.current.classList.add("knjige-aktivan");
-  }, []);
 
   function uvjet(index, stranica) {
     if (index >= (stranica-1)*velStranice && index < stranica*velStranice) return true;
@@ -475,49 +512,9 @@ function Knjige({loading, error, value}) {
   function submitKlik(e) {
     e.preventDefault();
 
-    // filtriramo zbog pritiska gumba
-    setVri1(vri.filter((el,index)=>{
-      let id1 = "";
-
-      // prvi filter je po biblioteci
-      if (el.biblioteka_id !== null) {
-        id1 = el.biblioteka_id.toString();
-        if (biblioteka !== "0" && id1 !== biblioteka) {
-          console.log("element sa " + id1 + " ne prolazi " + biblioteka);
-          return false;
-        } else {
-          
-        }
-      } else {
-        if (biblioteka !== "0")  return false;
-      }
-
-      //drugi filter je po naslovu
-      if (!el.naslov.toLowerCase().includes(naslov.toLowerCase())) return false;
-
-      //treci filter je po godini
-      if (godina !== "" && godina !== el.godina) {
-        return false;
-      }
     
-      //cetvrti filter je po autoru
-      if (autor.length !== 0) {
-        let vel = el.autori.length;
-        let rez1 = false;
-        for (let i = 0; i < vel; i++) {
-          if (el.autori[i].toLowerCase().includes(autor.toLowerCase())) {
-            rez1 = true;
-            break;
-          }
-        }
-        if (!rez1) return false;
-      }
+    submitaj();
 
-
-      //console.log("element sa " + id1 + " prolazi " + kod);
-      return true;
-    }));
-//}
   }
 
 
@@ -682,7 +679,6 @@ function App() {
           <Route exact path="/kontakt" element={<Kontakt/>} />
           <Route exact path="/onama" element={<ONama/>} />
          
-          {/*<Route exact path="/knjige" element={<Knjige/>} />*/}
           <Route exact path="/knjige" element={<Knjige loading={loading1} error={error1} value={value1}/>} />
           <Route exact path="/" element={<Izdvajamo loading={loading} error={error} value={value}/>} />
           <Route exact path="/detalji" element={<Detalji/>} />
