@@ -617,3 +617,280 @@ nav {
       left: 0px;
   }
 }
+
+/* knjige */
+
+#knjige-main {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  background-color: #f7cc86;
+}
+
+#knjige-polje1 {
+  width: 100%;
+  height: 500px;
+  /*background-color: yellow;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#knjige-polje2 {
+  width: 100%;
+  /*min-height: 70vh;*/
+  /*background-color: blue;*/
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#knjige-polje3 {
+  width: 100%;
+  height: 100px;
+  /*background-color: pink;*/
+  /*display: flex;
+  align-items: center;*/
+}
+
+.knjige-element {
+  width: 300px;
+  height: 150px;
+  background-color: #d7ac66;
+  position: relative;
+  overflow: hidden;
+}
+
+.knjige-element:hover {
+  background-color: #b78c46;
+}
+
+.knjige-div1 {
+  width: 80px;
+  /*background-color: green;*/
+  display: inline-block;
+}
+
+.knjige-div2 {
+  display: inline-block;
+  font-size: 16px;
+  width: 200px;
+}
+
+.knjige-div3 {
+  /*background-color: red;*/
+  width: 310px;
+  max-width: 100%;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.knjige-div4 {
+  width: 400px;
+  max-width: 90%;
+  height: 130px;
+  /*background-color: blue;*/
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.knjige-div5 {
+  /*background-color: green;*/
+  width: 310px;
+  max-width: 100%;
+  margin-bottom: 10px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#knjige-gumb {
+  height: 32px;
+  width: 100px;
+  font-size: 20px;
+}
+
+#knjige-gumb:hover {
+  cursor: pointer;
+}
+
+.knjige-button {
+  width: 190px;
+  width: 47%;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 12px;
+  /*margin-right: 5px;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.knjige-neaktivan { background-color: white;}
+.knjige-aktivan { background-color: #d7ac66;}
+
+.knjige-button:hover {
+  background-color: #d0d0d7;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 450px) {
+  .knjige-element {
+      width: 350px;
+      height: 175px;
+  }
+  .knjige-button {
+      font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .knjige-element {
+      width: 400px;
+      height: 200px;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .knjige-element {
+      width: 270px;
+      height: 135px;
+  }
+}
+
+@media screen and (min-width: 730px) {
+  .knjige-element {
+      width: 320px;
+      height: 160px;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .knjige-element {
+      width: 380px;
+      height: 190px;
+  }
+}
+
+/* pagination */
+
+div.pagination {
+  /*background-color: yellow;*/
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+ul.pagination {
+  /*background-color: pink;*/
+  display: flex;
+}
+
+.pagination li {
+  list-style-type: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  /*height: 30px;
+  width: 30px;*/
+  margin: 0px 2px 0px 2px;
+  padding: 0;
+  color: #b07412;
+  user-select: none;
+}
+
+.pagination li.active {
+  background: #f6f7c1;
+}
+
+/*
+.pagination a {
+  display: inline-block;*/
+  /*background-color: yellow;*/
+  /*text-decoration: none;
+  color: #b07412;
+}*/
+
+.pagination li:hover {
+  color: #089e23;
+  background-color: #b78c46;
+  cursor: pointer;
+}
+
+/*.pagination li:hover a {
+  color: #089e23;
+}*/
+
+.knjige-pagination-velikiekran {
+  display: initial;
+}
+
+.knjige-pagination-maliekran {
+  display: none;
+}
+
+.pagination .previous_page, .pagination .next_page {
+  /*width: 80px;
+  font-size: 13px;*/
+  /*background-color: white;*/
+}
+
+@media screen and (max-width: 499px) {
+  .pagination li {
+      height: 20px;
+      width: 20px;
+      /*background-color: pink;*/
+  }
+
+}
+
+@media screen and (min-width: 500px) {
+  .pagination li {
+      height: 25px;
+      width: 25px;
+      /*background-color: pink;*/
+  }
+
+  .pagination li.previous_page, .pagination li.next_page {
+      width: 65px;
+      height: 25px;
+      font-size: 11px;
+  }
+}
+
+@media screen and (min-width: 680px) {
+  .pagination li {
+      height: 30px;
+      width: 30px;
+      /*background-color: blue;*/
+  }
+
+  .pagination li.previous_page, .pagination li.next_page {
+      width: 80px;
+      height: 30px;
+      font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .pagination li.previous_page, .pagination li.next_page {
+      width: 25px;
+      height: 25px;
+      font-size: 10px;
+  }
+
+  .knjige-pagination-velikiekran {
+      display: none;
+  }
+  
+  .knjige-pagination-maliekran {
+      display: initial;
+  }
+}
